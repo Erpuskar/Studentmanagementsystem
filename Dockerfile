@@ -11,7 +11,10 @@ RUN dotnet publish "StudentManagementSystem.csproj" \
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 
+USER root
 COPY --from=build /app/publish .
+RUN chmod -R 777 /app
+USER $APP_UID
 
 EXPOSE 10000
 
