@@ -1,0 +1,252 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - StudentManagementSystem</title>
+
+    <script type="importmap"></script>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/StudentManagementSystem.styles.css" asp-append-version="true" />
+
+    <style>
+        body {
+            margin: 0;
+            background-color: #f4f6f9;
+            font-family: Arial, sans-serif;
+        }
+
+        .admin-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            min-width: 250px;
+            background-color: #172033;
+            color: white;
+            padding: 25px 15px;
+        }
+
+        .sidebar-brand {
+            font-size: 21px;
+            font-weight: bold;
+            padding: 0 12px;
+            margin-bottom: 35px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .sidebar-menu a:hover {
+            background-color: #334155;
+            color: white;
+        }
+
+        .sidebar-menu a.active {
+            background-color: #2563eb;
+            color: white;
+        }
+
+        .menu-heading {
+            color: #94a3b8;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin: 25px 12px 12px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* Topbar */
+        .topbar {
+            background-color: white;
+            padding: 18px 25px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topbar h5 {
+            margin: 0;
+            font-weight: 600;
+            color: #172033;
+        }
+
+        .content-area {
+            padding: 25px;
+        }
+
+        .admin-footer {
+            padding: 15px 25px;
+            color: #64748b;
+            font-size: 13px;
+            border-top: 1px solid #e5e7eb;
+            background: white;
+        }
+
+        /* Mobile Responsive */
+        @@media (max-width: 768px) {
+            .admin-wrapper {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                min-width: 100%;
+                padding: 15px;
+            }
+
+            .sidebar-brand {
+                margin-bottom: 15px;
+            }
+
+            .sidebar-menu {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            .sidebar-menu li {
+                margin: 0;
+            }
+
+            .menu-heading {
+                display: none;
+            }
+
+            .content-area {
+                padding: 15px;
+            }
+
+            .topbar {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="admin-wrapper">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+
+            <div class="sidebar-brand">
+                🎓 StudentMS
+            </div>
+
+            <div class="menu-heading">Main Menu</div>
+
+            <ul class="sidebar-menu">
+
+                <li>
+                    <a asp-controller="Student"
+                       asp-action="Dashboard">
+                        📊 Dashboard
+                    </a>
+                </li>
+
+                <li>
+                    <a asp-controller="Student"
+                       asp-action="Index">
+                        👨‍🎓 All Students
+                    </a>
+                </li>
+
+                <li>
+                    <a asp-controller="Student"
+                       asp-action="Create">
+                        ➕ Add Student
+                    </a>
+                </li>
+
+            </ul>
+
+            <div class="menu-heading">Other</div>
+
+            <ul class="sidebar-menu">
+
+                <li>
+                    <a asp-controller="Home"
+                       asp-action="Index">
+                        🏠 Home
+                    </a>
+                </li>
+
+                <li>
+                    <a asp-controller="Home"
+                       asp-action="Privacy">
+                        🔒 Privacy
+                    </a>
+                </li>
+
+            </ul>
+
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+
+            <!-- Top Navigation -->
+            <header class="topbar">
+
+                <h5>Admin Panel</h5>
+
+                <div>
+                    <span class="text-muted">
+                        Welcome, Admin 👋
+                    </span>
+                </div>
+
+            </header>
+
+            <!-- Page Content -->
+            <main class="content-area" role="main">
+                @RenderBody()
+            </main>
+
+            <!-- Footer -->
+            <footer class="admin-footer">
+                &copy; 2026 - Student Management System
+            </footer>
+
+        </div>
+
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

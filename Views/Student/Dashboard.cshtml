@@ -1,0 +1,194 @@
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container-fluid">
+
+    <!-- Dashboard Heading -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">Student Management Dashboard</h2>
+            <p class="text-muted">Overview of your student records</p>
+        </div>
+
+        <a asp-action="Create" class="btn btn-primary">
+            + Add New Student
+        </a>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-3">
+            <div class="card bg-primary text-white shadow h-100">
+                <div class="card-body">
+                    <h5>Total Students</h5>
+                    <h2>@ViewBag.TotalStudents</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-success text-white shadow h-100">
+                <div class="card-body">
+                    <h5>Total Courses</h5>
+                    <h2>@ViewBag.TotalCourses</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-info text-white shadow h-100">
+                <div class="card-body">
+                    <h5>Male Students</h5>
+                    <h2>@ViewBag.MaleStudents</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark shadow h-100">
+                <div class="card-body">
+                    <h5>Female Students</h5>
+                    <h2>@ViewBag.FemaleStudents</h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Chart and Recent Students -->
+    <div class="row g-4">
+
+        <!-- Gender Distribution Chart -->
+        <div class="col-lg-4">
+            <div class="card shadow h-100">
+
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Gender Distribution</h5>
+                </div>
+
+                <div class="card-body">
+                    <canvas id="genderChart"></canvas>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Recent Students Table -->
+        <div class="col-lg-8">
+            <div class="card shadow h-100">
+
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Recent Students</h5>
+
+                    <a asp-action="Index" class="btn btn-sm btn-outline-primary">
+                        View All
+                    </a>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="table-responsive">
+
+                        <table class="table table-hover align-middle">
+
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Roll No</th>
+                                    <th>Full Name</th>
+                                    <th>Course</th>
+                                    <th>Gender</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @if (ViewBag.RecentStudents != null &&
+                                    ViewBag.RecentStudents.Count > 0)
+                                {
+                                    foreach (var student in ViewBag.RecentStudents)
+                                    {
+                                        <tr>
+                                            <td>@student.RollNo</td>
+                                            <td>@student.FullName</td>
+                                            <td>@student.Course</td>
+                                            <td>@student.Gender</td>
+
+                                            <td>
+                                                <a asp-action="Details"
+                                                   asp-route-id="@student.StudentId"
+                                                   class="btn btn-sm btn-outline-info">
+                                                    View
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5"
+                                            class="text-center text-muted">
+                                            No students found.
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+
+        const chartData = @Html.Raw(ViewBag.GenderChartData);
+
+        const ctx = document.getElementById('genderChart');
+
+        new Chart(ctx, {
+            type: 'doughnut',
+
+            data: {
+                labels: chartData.labels,
+
+                datasets: [{
+                    label: 'Students',
+                    data: chartData.values,
+                    backgroundColor: [
+                        '#0d6efd',
+                        '#ffc107'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+
+            options: {
+                responsive: true,
+
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+    </script>
+}

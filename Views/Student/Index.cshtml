@@ -1,0 +1,236 @@
+
+@model IEnumerable<StudentManagementSystem.Models.Student>
+
+@{
+    ViewData["Title"] = "Student List";
+}
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold">Student Management System</h2>
+            <p class="text-muted">Manage and search student records</p>
+        </div>
+
+        <a asp-action="Create" class="btn btn-primary">
+            + Add New Student
+        </a>
+
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header bg-white">
+            <h5 class="mb-0">Search & Filter Students</h5>
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Index" method="get">
+
+                <div class="row g-3">
+
+                    <!-- Search by Name -->
+                    <div class="col-md-4">
+                        <label class="form-label">Student Name</label>
+
+                        <input type="text"
+                               name="searchName"
+                               value="@ViewBag.SearchName"
+                               class="form-control"
+                               placeholder="Enter student name" />
+                    </div>
+
+                    <!-- Search by Roll Number -->
+                    <div class="col-md-3">
+                        <label class="form-label">Roll Number</label>
+
+                        <input type="text"
+                               name="rollNo"
+                               value="@ViewBag.RollNo"
+                               class="form-control"
+                               placeholder="Enter roll number" />
+                    </div>
+
+                    <!-- Filter by Gender -->
+                    <div class="col-md-3">
+                        <label class="form-label">Gender</label>
+
+                        <select name="gender" class="form-select">
+
+                            <option value="">All Genders</option>
+
+                            <option value="Male"
+                                selected="@(ViewBag.Gender == "Male")">
+                                Male
+                            </option>
+
+                            <option value="Female"
+                                selected="@(ViewBag.Gender == "Female")">
+                                Female
+                            </option>
+
+                        </select>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="col-md-2 d-flex align-items-end gap-2">
+
+                        <button type="submit"
+                                class="btn btn-primary">
+                            Search
+                        </button>
+
+                        <a asp-action="Index"
+                           class="btn btn-secondary">
+                            Clear
+                        </a>
+                        <a asp-controller="Student"
+   asp-action="ExportCSV"
+   asp-route-searchName="@ViewBag.SearchName"
+   asp-route-rollNo="@ViewBag.RollNo"
+   asp-route-gender="@ViewBag.Gender"
+   class="btn btn-success">
+    Export CSV
+</a>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- Student Records Table -->
+    <div class="card shadow-sm">
+
+        <div class="card-header bg-white d-flex justify-content-between">
+
+            <h5 class="mb-0">Student Records</h5>
+
+            <span class="badge bg-primary">
+                @Model.Count() Students Found
+            </span>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-striped table-hover align-middle">
+
+                    <thead class="table-dark">
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Roll No</th>
+                            <th>Full Name</th>
+                            <th>Gender</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Course</th>
+                            <th>Address</th>
+                            <th>Actions</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @if (Model.Any())
+                        {
+                            @foreach (var student in Model)
+                            {
+                                <tr>
+
+                                    <td>@student.StudentId</td>
+
+                                    <td>@student.RollNo</td>
+
+                                    <td>@student.FullName</td>
+
+                                    <td>
+                                        @if (student.Gender == "Male")
+                                        {
+                                            <span class="badge bg-primary">
+                                                Male
+                                            </span>
+                                        }
+                                        else if (student.Gender == "Female")
+                                        {
+                                            <span class="badge bg-warning text-dark">
+                                                Female
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            @student.Gender
+                                        }
+                                    </td>
+
+                                    <td>@student.Email</td>
+
+                                    <td>@student.Phone</td>
+
+                                    <td>@student.Course</td>
+
+                                    <td>@student.Address</td>
+
+                                    <td>
+
+                                        <div class="d-flex gap-1">
+
+                                            <a asp-action="Details"
+                                               asp-route-id="@student.StudentId"
+                                               class="btn btn-info btn-sm">
+                                                Details
+                                            </a>
+
+                                            <a asp-action="Edit"
+                                               asp-route-id="@student.StudentId"
+                                               class="btn btn-warning btn-sm">
+                                                Edit
+                                            </a>
+
+                                            <a asp-action="Delete"
+                                               asp-route-id="@student.StudentId"
+                                               class="btn btn-danger btn-sm">
+                                                Delete
+                                            </a>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="9"
+                                    class="text-center text-danger py-4">
+                                    No matching student records found!
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
